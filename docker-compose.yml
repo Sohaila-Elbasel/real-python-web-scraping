@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  fastapi-web:
+    container_name: fastapi-web
+    build:
+      context: .
+      dockerfile: docker/fastapi/Dockerfile
+    command: uvicorn app.main:app --reload --host 0.0.0.0
+    volumes:
+      - .:/code
+    ports:
+      - 8008:8000
+    # environment:
+    #   - DATABASE_URL=postgresql://fastapi_puffin:fastapi_puffin@db:5432/fastapi_puffin
+    depends_on:
+      - fastapi-db
+  
+  fastapi-db:
+    container_name: fastapi-db
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=fastapi_puffin
+      - POSTGRES_PASSWORD=fastapi_puffin
+      - POSTGRES_DB=fastapi_puffin
+
+volumes:
+  postgres_data:
