@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from fastapi import FastAPI
 from app.schema import ArticleSchema, KeywordSchema
 
@@ -17,9 +17,11 @@ app = get_application()
 
 
 @app.get("/", response_model=List[ArticleSchema])
-def get_articles():    
-    artilce_query = session.query(Article).all()
-    return artilce_query
+def get_articles(title: Union[str, None]=None): 
+    artilce_query = session.query(Article)
+    if title:
+        return artilce_query.filter(Article.title.ilike(f'%{title}%'))
+    return artilce_query.all()
     
 
 @app.get('/update')
