@@ -6,20 +6,20 @@ class ArticleBase(BaseModel):
     title: str
     url: str
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 class ArticleIDBase(BaseModel):
     id: int
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 class KeywordBase(BaseModel):
     id: int
     name: str
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 class KeywordSchema(KeywordBase):
